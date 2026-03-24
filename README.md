@@ -10,13 +10,13 @@ A fully functional, decentralized Web3 application built on the Stellar Soroban 
 
 ## Dashboard Preview
 
-![Dashboard Screenshot](./dashboard-preview.png)
+![Dashboard Screenshot](./dashboard.png)
 
 ---
 
 ## Stellar Labs
 
-![Stellar Labs Screenshot](./stellar-labs-preview.png)
+![Stellar Labs Screenshot](./stellar-labs.png)
 
 ---
 
