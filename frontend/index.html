@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CertVerify — Stellar Soroban Certificate Verifier</title>
+    <meta name="description" content="Issue and verify tamper-proof certificates on the Stellar blockchain using a Soroban smart contract." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <!-- ─── Animated Background ─── -->
+    <div class="bg-grid"></div>
+    <div class="bg-glow bg-glow--1"></div>
+    <div class="bg-glow bg-glow--2"></div>
+    <div class="bg-glow bg-glow--3"></div>
+
+    <!-- ─── Navbar ─── -->
+    <nav class="navbar" id="navbar">
+        <div class="navbar__brand">
+            <span class="navbar__icon">🎓</span>
+            <span class="navbar__title">CertVerify</span>
+        </div>
+        <div class="navbar__actions">
+            <span class="badge" id="modeBadge">Demo Mode</span>
+            <div class="wallet-input-group">
+                <input type="text" id="manualWalletInput" class="form__input form__input--small" placeholder="Enter Freighter Address..." />
+                <button class="btn btn--outline" id="connectBtn">
+                    <span class="btn__dot"></span>
+                    Connect Wallet
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ─── Hero ─── -->
+    <header class="hero">
+        <div class="hero__content">
+            <h1 class="hero__title">
+                <span class="hero__title-line">Blockchain</span>
+                <span class="hero__title-line hero__title-line--gradient">Certificate Verifier</span>
+            </h1>
+            <p class="hero__subtitle">
+                Issue tamper-proof certificates on the Stellar blockchain. Verify authenticity instantly.
+                Powered by Soroban smart contracts.
+            </p>
+        </div>
+    </header>
+
+    <!-- ─── Status Bar ─── -->
+    <section class="status-bar" id="statusBar">
+        <div class="status-bar__item">
+            <span class="status-bar__label">Network</span>
+            <span class="status-bar__value" id="networkValue">Testnet</span>
+        </div>
+        <div class="status-bar__divider"></div>
+        <div class="status-bar__item">
+            <span class="status-bar__label">Wallet</span>
+            <span class="status-bar__value" id="walletValue">Not connected</span>
+        </div>
+        <div class="status-bar__divider"></div>
+        <div class="status-bar__item">
+            <span class="status-bar__label">Certificates</span>
+            <span class="status-bar__value" id="certCount">0 issued</span>
+        </div>
+    </section>
+
+    <!-- ─── Main Cards ─── -->
+    <main class="cards">
+        <!-- Issue Certificate Card (Admin) -->
+        <section class="card card--issue" id="issueCard">
+            <div class="card__header">
+                <div class="card__icon-wrap card__icon-wrap--issue">📜</div>
+                <div>
+                    <h2 class="card__title">Issue Certificate</h2>
+                    <p class="card__desc">Admin: register a new certificate on-chain</p>
+                </div>
+            </div>
+            <form class="form" id="issueForm">
+                <div class="form__group">
+                    <label class="form__label" for="issueInput">Certificate Data</label>
+                    <textarea class="form__input form__textarea" id="issueInput"
+                        placeholder="Enter certificate text, ID, or any data to hash…"
+                        rows="3"></textarea>
+                </div>
+                <div class="hash-preview" id="issueHashPreview">
+                    <span class="hash-preview__label">SHA-256 Hash</span>
+                    <span class="hash-preview__value mono" id="issueHashValue">—</span>
+                </div>
+                <button class="btn btn--primary btn--full" type="submit" id="issueBtn">
+                    <span class="btn__icon">📝</span> Issue Certificate
+                </button>
+            </form>
+            <div class="card__result hidden" id="issueResult"></div>
+        </section>
+
+        <!-- Verify Certificate Card -->
+        <section class="card card--verify" id="verifyCard">
+            <div class="card__header">
+                <div class="card__icon-wrap card__icon-wrap--verify">🔍</div>
+                <div>
+                    <h2 class="card__title">Verify Certificate</h2>
+                    <p class="card__desc">Check if a certificate is authentic</p>
+                </div>
+            </div>
+            <form class="form" id="verifyForm">
+                <div class="form__group">
+                    <label class="form__label" for="verifyInput">Certificate Data</label>
+                    <textarea class="form__input form__textarea" id="verifyInput"
+                        placeholder="Enter the original certificate data to verify…"
+                        rows="3"></textarea>
+                </div>
+                <div class="hash-preview" id="verifyHashPreview">
+                    <span class="hash-preview__label">SHA-256 Hash</span>
+                    <span class="hash-preview__value mono" id="verifyHashValue">—</span>
+                </div>
+                <button class="btn btn--success btn--full" type="submit" id="verifyBtn">
+                    <span class="btn__icon">✅</span> Verify Certificate
+                </button>
+            </form>
+            <div class="card__result hidden" id="verifyResult"></div>
+
+            <!-- Verification Result Display -->
+            <div class="verify-display hidden" id="verifyDisplay">
+                <div class="verify-display__icon" id="verifyDisplayIcon"></div>
+                <div class="verify-display__text" id="verifyDisplayText"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ─── Recent Certificates ─── -->
+    <section class="recent-section" id="recentSection">
+        <div class="recent-section__header">
+            <h2 class="recent-section__title">📋 Recently Issued Certificates</h2>
+            <button class="btn btn--outline btn--small" id="clearHistoryBtn">Clear History</button>
+        </div>
+        <div class="recent-list" id="recentList">
+            <p class="recent-list__empty">No certificates issued yet. Use the Issue panel above.</p>
+        </div>
+    </section>
+
+    <!-- ─── Toast ─── -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- ─── Footer ─── -->
+    <footer class="footer">
+        <p>Built with ❤️ on <strong>Stellar Soroban</strong> · Certificate Verifier Smart Contract</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
