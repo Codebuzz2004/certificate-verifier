@@ -110,8 +110,16 @@ The contract is already deployed to the Stellar Testnet at the address above. To
    ```bash
    cd frontend
    ```
-2. Open `index.html` in a browser directly, or serve it locally.
-3. Supports **Demo Mode** (localStorage) and **Freighter wallet** for live testnet interaction.
+2. Install dependencies (if you haven't already):
+   ```bash
+   npm install
+   ```
+3. Run the Next.js development server:
+   ```bash
+   npm run dev
+   ```
+4. Open `http://localhost:3000` in your browser.
+5. Supports **Demo Mode** (localStorage) and **Freighter wallet** for live testnet interaction.
 
 ### Connecting your Wallet
 
